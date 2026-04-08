@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ОЛИМП — Учитесь с нами</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+    }
+    .cloud {
+      filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.1));
+    }
+    
+    /* Hover эффекты для футера */
+    .footer-link {
+      transition: all 0.2s ease;
+    }
+    .footer-link:hover {
+      color: #ef4444;
+      transform: translateX(4px);
+    }
+    
+    /* Центрирование навигации */
+    .nav-center {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+    }
+  </style>
+</head>
+<body class="bg-[#f9f0e0] text-gray-800 overflow-x-hidden">
+
+  <!-- HEADER — Навигация теперь по центру -->
+  <header class="bg-white border-b border-orange-200 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-5 flex items-center">
+      
+      <!-- Лого слева -->
+      <a href="#" class="text-3xl font-bold text-red-500">OLIMP.RU</a>
+
+      <!-- Навигация по центру -->
+      <nav class="nav-center hidden md:flex items-center text-base font-medium">
+        <a href="#" class="hover:text-red-500 transition-colors">ГЛАВНАЯ</a>
+        <a href="#" class="hover:text-red-500 transition-colors">НАШИ КУРСЫ</a>
+        <a href="#" class="hover:text-red-500 transition-colors">НАШ ПОДХОД</a>
+        <a href="#" class="hover:text-red-500 transition-colors">ОТЗЫВЫ</a>
+      </nav>
+
+      <!-- Кнопка справа -->
+      <button onclick="window.location.href='#'" 
+              class="bg-red-500 hover:bg-red-600 text-white px-8 py-3 rounded-2xl font-medium transition ml-auto">
+        ВОЙТИ
+      </button>
+
+      <!-- Мобильное меню (пока простая кнопка) -->
+      <button class="md:hidden ml-4 text-2xl text-gray-700">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- HERO (без изменений) -->
+  <section class="relative bg-[#f9f0e0] py-16">
+    <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+      <div>
+        <h1 class="text-5xl md:text-6xl font-bold leading-tight mb-6">
+          УЧИТЕСЬ С НАМИ
+        </h1>
+        <p class="text-xl text-gray-600 mb-8 max-w-md">
+          Олимп — образовательная онлайн-платформа<br>для школьников, их родителей и учителей
+        </p>
+        
+        <div class="flex gap-4">
+          <button class="bg-white border-2 border-red-500 text-red-500 hover:bg-red-50 px-8 py-3.5 rounded-2xl font-medium transition">
+            ЗАРЕГИСТРИРОВАТЬСЯ
+          </button>
+          <button class="bg-red-500 hover:bg-red-600 text-white px-8 py-3.5 rounded-2xl font-medium transition">
+            ВОЙТИ
+          </button>
+        </div>
+      </div>
+
+      <!-- Котик — сюда вставляй своё изображение -->
+      <div class="relative flex justify-center md:justify-end">
+        <img src="images/CAT.png" 
+             alt="Котик Олимп" 
+             class="w-75 h-auto drop-shadow-2xl">
+      </div>
+    </div>
+  </section>
+
+  <!-- УЧИТЬСЯ ЭТО ПРОСТО — ОБЛАЧКА ПО ЦЕНТРУ -->
+<section class="py-24 bg-[#f9f0e0] relative">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-bold">УЧИТЬСЯ ЭТО ПРОСТО</h2>
+        <button class="mt-8 bg-red-500 text-white px-10 py-4 rounded-2xl font-medium hover:bg-red-600 transition">
+          ВЫБРАТЬ КУРС
+        </button>
+      </div>
+
+      <!-- Цепочка облачков -->
+      <div class="relative flex flex-col md:flex-row items-center justify-center gap-8 md:gap-6">
+
+        <img src="images/Group 2.png" 
+        
+
+      </div>
+    </div>
+  </section>
+
+  <!-- РЕБЁНОК УВЛЕЧЁН (без изменений) -->
+<section class="py-20 bg-[#f9f0e0]">
+    <div class="max-w-7xl mx-auto px-6 text-center">
+      <h2 class="text-4xl md:text-4xl font-bold leading-tight">
+        РЕБЁНОК УВЛЕЧЁН УЧЁБОЙ КАК ИГРОЙ
+      </h2>
+      <p class="text-gray-600 mt-6 text-lg">Материалы соответствуют ФГОС и ФООП</p>
+      
+      <button class="mt-8 bg-red-500 text-white px-10 py-4 rounded-2xl font-medium hover:bg-red-600 transition">
+          КУПИТЬ ПОДПИСКУ
+        </button>
+    </div>
+  </section>
+
+  <!-- ТАРИФЫ (готовы под твои изображения) -->
+  <section class="py-16 bg-[#f9f0e0]">
+    <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-3 gap-12">
+      
+        <img src="images/Frame 12.png" alt="1 месяц" class="w-full h-auto">
+      
+      
+        <img src="images/Frame 13.png" alt="3 месяца" class="w-full h-auto">
+      
+      
+        <img src="images/Frame 14.png" alt="12 месяцев" class="w-full h-auto">
+     
+    </div>
+  </section>
+
+  <!-- ОТЗЫВЫ (готов под изображение) -->
+<section class="py-20 bg-[#f9f0e0]">
+    <div class="max-w-7xl mx-auto px-6">
+      <h2 class="text-4xl font-bold text-center mb-12">НАС РЕКОМЕНДУЮТ РОДИТЕЛИ</h2>
+      
+      <div class="max-w-2xl mx-auto review-card rounded-3xl p-10">
+        <div class="review-content">
+          <div class="flex items-center gap-4 mb-8">
+            <div class="w-16 h-16 bg-gradient-to-br from-purple-400 to-pink-400 rounded-2xl flex items-center justify-center text-4xl shadow-inner flex-shrink-0">
+              👩‍❤️‍👩
+            </div>
+            <div>
+              <div class="font-semibold text-xl">Екатерина Ковалёва</div>
+              <div class="text-yellow-500 flex gap-1 text-xl">★★★★☆</div>
+              <div class="text-sm text-gray-500 mt-1">Мама ученика 4 класса • Москва</div>
+            </div>
+          </div>
+          
+          <p class="text-[17px] leading-relaxed text-gray-700">
+            «Теперь математика — самый любимый предмет у сына! 
+            Материал подаётся в такой доступной и интересной форме, что он сам садится за занятия. 
+            Никаких слёз и уговоров. Мы очень благодарны команде Олимп за то, что сделали учёбу настоящей игрой. 
+            Сердце мамы спокойно и радостно ❤️»
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER с hover эффектами -->
+  <footer class="bg-white pt-16 pb-8">
+    <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-12 gap-8">
+      
+      <!-- Иконка солнышка -->
+      <div class="md:col-span-2 flex justify-center md:justify-start">
+        
+          <img src="images/SUN.png">
+        
+      </div>
+
+      <!-- АККАУНТ -->
+      <div class="md:col-span-2">
+        <h3 class="font-bold mb-4 text-lg">АККАУНТ</h3>
+        <ul class="space-y-3 text-sm">
+          <li><a href="#" class="footer-link text-gray-600">Восстановление пароля</a></li>
+          <li><a href="#" class="footer-link text-gray-600">Логин</a></li>
+          <li><a href="#" class="footer-link text-gray-600">Настройки аккаунта</a></li>
+          <li><a href="#" class="footer-link text-gray-600">Пригласить друга</a></li>
+        </ul>
+      </div>
+
+      <!-- УЧЁБА -->
+      <div class="md:col-span-2">
+        <h3 class="font-bold mb-4 text-lg">УЧЁБА</h3>
+        <ul class="space-y-3 text-sm">
+          <li><a href="#" class="footer-link text-gray-600">Программа</a></li>
+          <li><a href="#" class="footer-link text-gray-600">Подписки</a></li>
+          <li><a href="#" class="footer-link text-gray-600">Система обучения</a></li>
+        </ul>
+      </div>
+
+      <!-- КОМПАНИЯ -->
+      <div class="md:col-span-2">
+        <h3 class="font-bold mb-4 text-lg">КОМПАНИЯ</h3>
+        <ul class="space-y-3 text-sm">
+          <li><a href="#" class="footer-link text-gray-600">О нас</a></li>
+          <li><a href="#" class="footer-link text-gray-600">Как мы работаем</a></li>
+          <li><a href="#" class="footer-link text-gray-600">Отзывы</a></li>
+        </ul>
+      </div>
+
+      <!-- ПОМОЩЬ -->
+      <div class="md:col-span-3">
+        <h3 class="font-bold mb-4 text-lg">ПОМОЩЬ</h3>
+        <ul class="space-y-3 text-sm">
+          <li><a href="#" class="footer-link text-gray-600">Часто задаваемые вопросы</a></li>
+          <li><a href="#" class="footer-link text-gray-600">Правила и условия</a></li>
+          <li><a href="#" class="footer-link text-gray-600">Политика конфиденциальности</a></li>
+          <li><a href="#" class="footer-link text-gray-600">Связаться с нами</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Нижняя часть футера -->
+    <div class="border-t mt-16 pt-8">
+      <div class="max-w-7xl mx-auto px-6 flex flex-wrap gap-8 justify-between items-center text-sm text-gray-500">
+        <div>© 2026 Олимп. Все права защищены.</div>
+        
+        <div class="flex gap-6">
+          <a href="#" class="hover:text-red-500 transition">Правила и условия</a>
+          <a href="#" class="hover:text-red-500 transition">Политика конфиденциальности</a>
+          <a href="#" class="hover:text-red-500 transition">Связаться с нами</a>
+        </div>
+
+        <!-- Соцсети -->
+        <div class="flex gap-5 text-2xl">
+          <i class="fab fa-vk hover:text-red-500 transition"></i>
+          <i class="fab fa-telegram hover:text-red-500 transition"></i>
+          <i class="fab fa-instagram hover:text-red-500 transition"></i>
+          <i class="fab fa-youtube hover:text-red-500 transition"></i>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
