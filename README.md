@@ -1,2 +1,26 @@
-Убедитесь, что страница с формой заявки работает корректно. При обработке запроса возникло исключение:
-TemplateSyntaxError: Invalid block tag on line 27: 'endblock'. Did you forget to register or load this tag?
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Конкурс</title>
+</head>
+<body>
+
+<h1>Рецепт мороженого "Анфиса"</h1>
+
+{% if message %}
+  <h2>{{ message }}</h2>
+{% endif %}
+
+<form method="post">
+  {% csrf_token %}
+
+  <table>
+    {{ form }}
+  </table>
+
+  <button type="submit">Отправить</button>
+</form>
+
+</body>
+</html>
