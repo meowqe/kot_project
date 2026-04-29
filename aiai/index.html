@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>Serendale — Быстрая связь и современные технологии</title>
+    
+    <link href="https://fonts.googleapis.com/css?family=Chillax&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Clash+Grotesk&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Cabinet+Grotesk&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Space+Grotesk&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    
+    <link rel="stylesheet" href="./css/main.css" />
+</head>
+<body>
+    <div class="main-container">
+        <div class="background-decor">
+            <div class="circle circle-pink"></div>
+            <div class="circle circle-purple"></div>
+            <div class="circle circle-blue"></div>
+        </div>
+
+        <header class="header">
+            <a href="#" class="logo">Serendale</a>
+            <nav class="nav">
+                <a href="#">Тарифы</a>
+                <a href="#">eSIM</a>
+                <a href="#">Услуги</a>
+                <a href="#">Покрытие</a>
+                <a href="#">Поддержка</a>
+            </nav>
+            <div class="social-icons">
+                <!-- Twitter/X -->
+                <a href="#" class="icon" aria-label="Twitter" title="Twitter">
+                    <i class="fa-brands fa-x-twitter"></i>
+                </a>
+                <!-- Discord -->
+                <a href="#" class="icon" aria-label="Discord" title="Discord">
+                    <i class="fa-brands fa-discord"></i>
+                </a>
+                <!-- Telegram -->
+                <a href="#" class="icon" aria-label="Telegram" title="Telegram">
+                    <i class="fa-brands fa-telegram"></i>
+                </a>
+                <!-- GitHub -->
+                <a href="#" class="icon" aria-label="GitHub" title="GitHub">
+                    <i class="fa-brands fa-github"></i>
+                </a>
+            </div>
+        </header>
+
+        <main class="hero">
+            <h1 class="hero-title">
+                <span class="gradient-text">Используй нашего</span><br>
+                <span class="white-text">ИИ-Ассистента</span>
+            </h1>
+            <p class="hero-description">
+                Подключайте eSIM и физические сим-карты с выгодными тарифами с помощью нашего ИИ-Ассистента. 
+                Переносите номер, меняйте тариф в один клик и оставайтесь на связи 
+                в любой точке страны с покрытием 99%.
+            </p>
+            <div class="cta-buttons">
+                <a href="#" class="btn btn-primary" id="openChatBtn">Подобрать тариф</a>
+                <a href="#" class="btn btn-secondary">Все тарифы</a>
+            </div>
+        </main>
+
+        <div class="bottom-image">
+            <img src="images/v3_107.png" alt="Визуализация связи" />
+        </div>
+    </div>
+
+    <!-- Модальное окно чата -->
+    <div class="chat-modal-overlay" id="chatModal">
+        <div class="chat-modal">
+            <div class="chat-header">
+                <div class="chat-header-left">
+                    <div class="chat-avatar">
+                        <i class="fa-solid fa-headset"></i>
+                    </div>
+                    <div class="chat-header-info">
+                        <div class="chat-header-name-row">
+                            <h3>Ассистент Serendale</h3>
+                            <span class="online-dot"></span>
+                        </div>
+                    </div>
+                </div>
+                <button class="chat-close-btn" id="closeChatBtn">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot-message">
+                    <div class="message-avatar">
+                        <i class="fa-solid fa-headset"></i>
+                    </div>
+                    <div class="message-content">
+                        <p>Здравствуйте! Я ассистент Serendale. Чем могу помочь?</p>
+                        <p style="font-size: 13px; margin-top: 8px; opacity: 0.7;">Я помогу вам:</p>
+                        <ul style="font-size: 13px; margin-top: 4px; padding-left: 16px; opacity: 0.7;">
+                            <li>Подобрать подходящий тариф</li>
+                            <li>Оформить eSIM или физическую сим-карту</li>
+                            <li>Перенести номер от другого оператора</li>
+                            <li>Ответить на вопросы по услугам</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chat-suggestions" id="chatSuggestions">
+                <button class="suggestion-chip">Какие тарифы у вас есть?</button>
+                <button class="suggestion-chip">Как оформить eSIM?</button>
+                <button class="suggestion-chip">Как перенести номер?</button>
+                <button class="suggestion-chip">Нужны документы для оформления</button>
+            </div>
+
+            <div class="chat-input-area">
+                <input type="text" class="chat-input" id="chatInput" placeholder="Введите сообщение..." />
+                <button class="chat-send-btn" id="sendMessageBtn">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/./js/chat.js"></script>
+</body>
+</html>
