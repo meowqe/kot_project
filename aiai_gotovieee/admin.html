@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serendale — Панель сотрудника (Заявки)</title>
+    <link href="https://fonts.googleapis.com/css?family=Clash+Grotesk&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Cabinet+Grotesk&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Space+Grotesk&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Cabinet Grotesk', sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            min-height: 100vh;
+        }
+        
+        .admin-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .admin-logo {
+            font-family: 'Chillax', sans-serif;
+            font-size: 28px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .admin-badge {
+            background: linear-gradient(135deg, #5c6df3, #ff3bff);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
+        .refresh-btn {
+            padding: 10px 20px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #fff;
+            cursor: pointer;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+        
+        .refresh-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .debug-panel {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            display: none;
+        }
+        
+        .debug-panel.show {
+            display: block;
+        }
+        
+        .debug-panel h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+        
+        .debug-panel .log-entry {
+            padding: 4px 0;
+            color: rgba(255, 255, 255, 0.7);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+        
+        .stat-icon.new { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
+        .stat-icon.process { background: rgba(251, 191, 36, 0.15); color: #fbbf24; }
+        .stat-icon.done { background: rgba(34, 197, 94, 0.15); color: #4ade80; }
+        .stat-icon.total { background: rgba(252, 79, 246, 0.15); color: #f472b6; }
+        
+        .stat-info h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 28px;
+            font-weight: 600;
+            color: #fff;
+        }
+        
+        .stat-info p {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 2px;
+        }
+        
+        .filters-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .filter-btn {
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.03);
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 13px;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+            color: #fff;
+        }
+        
+        .filter-btn.active {
+            background: linear-gradient(135deg, #5c6df3, #ff3bff);
+            border-color: transparent;
+        }
+        
+        .search-input {
+            padding: 10px 16px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #fff;
+            font-family: 'Cabinet Grotesk', sans-serif;
+            font-size: 14px;
+            outline: none;
+            min-width: 250px;
+            flex: 1;
+            max-width: 350px;
+        }
+        
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .applications-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .app-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 20px;
+            transition: all 0.2s;
+        }
+        
+        .app-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+        
+        .app-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        
+        .app-id {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.4);
+        }
+        
+        .app-status {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .status-new {
+            background: rgba(59, 130, 246, 0.2);
+            color: #93c5fd;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+        
+        .status-process {
+            background: rgba(251, 191, 36, 0.2);
+            color: #fde68a;
+            border: 1px solid rgba(251, 191, 36, 0.3);
+        }
+        
+        .status-done {
+            background: rgba(34, 197, 94, 0.2);
+            color: #86efac;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+        
+        .app-service {
+            font-family: 'Clash Grotesk', sans-serif;
+            font-size: 18px;
+            color: #fff;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        
+        .app-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+        
+        .app-detail {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        
+        .app-detail-label {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .app-detail-value {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .app-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+        
+        .action-btn {
+            padding: 8px 16px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            cursor: pointer;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 13px;
+            transition: all 0.2s;
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.12);
+        }
+        
+        .action-btn.primary {
+            background: linear-gradient(135deg, #5c6df3, #ff3bff);
+            border-color: transparent;
+        }
+        
+        .action-btn.success {
+            background: rgba(34, 197, 94, 0.2);
+            border-color: rgba(34, 197, 94, 0.3);
+            color: #4ade80;
+        }
+        
+        .action-btn.danger {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: rgba(255, 255, 255, 0.4);
+        }
+        
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 16px;
+            display: block;
+        }
+        
+        .empty-state h3 {
+            font-family: 'Clash Grotesk', sans-serif;
+            font-size: 20px;
+            margin-bottom: 8px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .notification-toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #5c6df3, #ff3bff);
+            color: #fff;
+            padding: 16px 20px;
+            border-radius: 14px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 14px;
+            z-index: 1000;
+            animation: slideIn 0.3s ease, slideOut 0.3s ease 3s forwards;
+            box-shadow: 0 10px 30px rgba(252, 79, 246, 0.3);
+            max-width: 400px;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+        
+        @media (max-width: 768px) {
+            .admin-container { padding: 12px; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .app-details { grid-template-columns: 1fr; }
+            .search-input { max-width: 100%; width: 100%; }
+        }
+        
+        @media (max-width: 480px) {
+            .stats-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <header class="admin-header">
+            <div class="admin-logo">
+                <i class="fa-solid fa-headset"></i>
+                Serendale
+                <span class="admin-badge">Панель сотрудника</span>
+            </div>
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <button class="refresh-btn" onclick="toggleDebug()">
+                    <i class="fa-solid fa-bug"></i> Debug
+                </button>
+                <button class="refresh-btn" onclick="loadApplications()">
+                    <i class="fa-solid fa-arrows-rotate"></i> Обновить
+                </button>
+            </div>
+        </header>
+        
+        <!-- Панель отладки -->
+        <div class="debug-panel" id="debugPanel">
+            <h3>🔍 Отладочная информация</h3>
+            <div id="debugLogs"></div>
+        </div>
+        
+        <!-- Статистика -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon new"><i class="fa-solid fa-circle"></i></div>
+                <div class="stat-info">
+                    <h3 id="statNew">0</h3>
+                    <p>Новые заявки</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon process"><i class="fa-solid fa-clock"></i></div>
+                <div class="stat-info">
+                    <h3 id="statProcess">0</h3>
+                    <p>В обработке</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon done"><i class="fa-solid fa-check-circle"></i></div>
+                <div class="stat-info">
+                    <h3 id="statDone">0</h3>
+                    <p>Выполненные</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon total"><i class="fa-solid fa-list"></i></div>
+                <div class="stat-info">
+                    <h3 id="statTotal">0</h3>
+                    <p>Всего заявок</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Фильтры -->
+        <div class="filters-bar">
+            <button class="filter-btn active" data-filter="all">Все</button>
+            <button class="filter-btn" data-filter="new">Новые</button>
+            <button class="filter-btn" data-filter="process">В обработке</button>
+            <button class="filter-btn" data-filter="done">Выполненные</button>
+            <input type="text" class="search-input" placeholder="🔍 Поиск по имени, телефону, email..." oninput="filterApplications()" id="searchInput" />
+        </div>
+        
+        <!-- Список заявок -->
+        <div class="applications-list" id="applicationsList">
+            <div class="empty-state">
+                <i class="fa-solid fa-inbox"></i>
+                <h3>Загрузка заявок...</h3>
+                <p>Пожалуйста, подождите</p>
+            </div>
+        </div>
+    </div>
+    
+    <div id="notificationToast" style="display: none;"></div>
+
+<script>
+    // =============================================
+    // АДМИН-ПАНЕЛЬ v2.0 — ПОДДЕРЖКА ЗАЯВОК + ДОКУМЕНТЫ
+    // =============================================
+    
+    const DB_NAME = 'SerendaleTelecomDB';
+    const DB_VERSION = 5;
+    let db = null;
+    let currentFilter = 'all';
+    let debugLogs = [];
+    
+    function addDebugLog(message, type = 'info') {
+        const timestamp = new Date().toLocaleTimeString();
+        debugLogs.push({ timestamp, message, type });
+        console.log(`[${type.toUpperCase()}] ${message}`);
+        const debugLogsContainer = document.getElementById('debugLogs');
+        if (debugLogsContainer) {
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            entry.innerHTML = `<span style="color: #888;">[${timestamp}]</span> ${message}`;
+            debugLogsContainer.prepend(entry);
+        }
+    }
+    
+    function toggleDebug() {
+        const panel = document.getElementById('debugPanel');
+        panel.classList.toggle('show');
+    }
+    
+    function openAdminDB() {
+        return new Promise((resolve, reject) => {
+            addDebugLog(`Открываем БД: ${DB_NAME} v${DB_VERSION}`);
+            const request = indexedDB.open(DB_NAME, DB_VERSION);
+            request.onupgradeneeded = (event) => {
+                const database = event.target.result;
+                addDebugLog(`Апгрейд БД с версии ${event.oldVersion} до ${event.newVersion}`);
+                if (!database.objectStoreNames.contains('chatMessages')) {
+                    const chatStore = database.createObjectStore('chatMessages', { keyPath: 'id', autoIncrement: true });
+                    chatStore.createIndex('timestamp', 'timestamp', { unique: false });
+                    chatStore.createIndex('sender', 'sender', { unique: false });
+                    chatStore.createIndex('sessionId', 'sessionId', { unique: false });
+                    addDebugLog('✅ Создано хранилище chatMessages');
+                }
+                if (!database.objectStoreNames.contains('applications')) {
+                    const appStore = database.createObjectStore('applications', { keyPath: 'id' });
+                    appStore.createIndex('status', 'status', { unique: false });
+                    appStore.createIndex('createdAt', 'createdAt', { unique: false });
+                    appStore.createIndex('phone', 'phone', { unique: false });
+                    appStore.createIndex('serviceType', 'serviceType', { unique: false });
+                    addDebugLog('✅ Создано хранилище applications');
+                }
+            };
+            request.onsuccess = (event) => {
+                db = event.target.result;
+                const stores = Array.from(db.objectStoreNames);
+                addDebugLog(`✅ БД открыта. Хранилища: ${stores.join(', ')}`);
+                resolve(db);
+            };
+            request.onerror = (event) => {
+                addDebugLog(`❌ Ошибка открытия БД: ${event.target.error}`, 'error');
+                reject(event.target.error);
+            };
+        });
+    }
+    
+    async function getAllApplications() {
+        if (!db) { addDebugLog('❌ БД не открыта!', 'error'); return []; }
+        return new Promise((resolve, reject) => {
+            try {
+                if (!db.objectStoreNames.contains('applications')) { addDebugLog('⚠️ Хранилище applications не найдено!', 'error'); resolve([]); return; }
+                const transaction = db.transaction(['applications'], 'readonly');
+                const store = transaction.objectStore('applications');
+                const request = store.getAll();
+                request.onsuccess = () => {
+                    const apps = request.result;
+                    addDebugLog(`📊 Получено ${apps.length} заявок из БД`);
+                    if (apps.length > 0) { const ids = apps.map(a => a.id).join(', '); addDebugLog(`📋 ID заявок: ${ids}`); }
+                    apps.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                    resolve(apps);
+                };
+                request.onerror = (event) => { addDebugLog(`❌ Ошибка получения заявок: ${event.target.error}`, 'error'); reject(event.target.error); };
+            } catch (error) { addDebugLog(`❌ Ошибка транзакции: ${error.message}`, 'error'); resolve([]); }
+        });
+    }
+    
+    async function updateApplicationStatus(appId, newStatus) {
+        if (!db) return;
+        return new Promise((resolve, reject) => {
+            try {
+                const transaction = db.transaction(['applications'], 'readwrite');
+                const store = transaction.objectStore('applications');
+                const request = store.get(appId);
+                request.onsuccess = () => {
+                    const app = request.result;
+                    if (app) { app.status = newStatus; app.updatedAt = new Date().toISOString(); const updateRequest = store.put(app); updateRequest.onsuccess = () => { addDebugLog(`✅ Статус заявки ${appId} изменён на "${newStatus}"`); resolve(app); }; updateRequest.onerror = reject; }
+                    else { addDebugLog(`❌ Заявка ${appId} не найдена`, 'error'); reject('Заявка не найдена'); }
+                };
+                request.onerror = reject;
+            } catch (error) { addDebugLog(`❌ Ошибка обновления: ${error.message}`, 'error'); reject(error); }
+        });
+    }
+    
+    async function deleteApplication(appId) {
+        if (!db) return;
+        return new Promise((resolve, reject) => {
+            try {
+                const transaction = db.transaction(['applications'], 'readwrite');
+                const store = transaction.objectStore('applications');
+                const request = store.delete(appId);
+                request.onsuccess = () => { addDebugLog(`🗑️ Заявка ${appId} удалена`); resolve(); };
+                request.onerror = reject;
+            } catch (error) { addDebugLog(`❌ Ошибка удаления: ${error.message}`, 'error'); reject(error); }
+        });
+    }
+    
+    function renderApplications(applications) {
+        const container = document.getElementById('applicationsList');
+        const searchTerm = (document.getElementById('searchInput')?.value || '').toLowerCase();
+        let filtered = applications;
+        if (currentFilter !== 'all') { filtered = filtered.filter(app => app.status === currentFilter); }
+        if (searchTerm) { filtered = filtered.filter(app => (app.fullName && app.fullName.toLowerCase().includes(searchTerm)) || (app.phone && app.phone.toLowerCase().includes(searchTerm)) || (app.email && app.email.toLowerCase().includes(searchTerm)) || (app.id && app.id.toLowerCase().includes(searchTerm)) || (app.tariffName && app.tariffName.toLowerCase().includes(searchTerm)) || (app.comment && app.comment.toLowerCase().includes(searchTerm))); }
+        if (filtered.length === 0) { container.innerHTML = `<div class="empty-state"><i class="fa-solid fa-inbox"></i><h3>Нет заявок</h3><p>${searchTerm ? 'По вашему запросу ничего не найдено' : 'Заявки появятся здесь, когда пользователи оформят услуги через чат'}</p></div>`; }
+        else { container.innerHTML = filtered.map(app => createAppCard(app)).join(''); }
+        updateStats(applications);
+    }
+    
+    function createAppCard(app) {
+        const serviceTypeNames = { 'tariff': 'Подключение тарифа', 'esim': 'Оформление eSIM', 'physical_sim': 'Заказ сим-карты', 'physical': 'Заказ сим-карты', 'mnp': 'Перенос номера', 'documents': '📄 Отправка документов' };
+        const statusClass = `status-${app.status}`;
+        const statusNames = { 'new': 'Новая', 'process': 'В обработке', 'done': 'Выполнена' };
+        const createdDate = new Date(app.createdAt);
+        const formattedDate = createdDate.toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+        let serviceInfo = serviceTypeNames[app.serviceType] || 'Услуга';
+        if (app.tariffName && app.tariffName !== 'Отправка документов') serviceInfo += ` «${app.tariffName}»`;
+        if (app.passportSeries) serviceInfo += ` — Паспорт: ${app.passportSeries} ${app.passportNumber || ''}`;
+
+        return `<div class="app-card" id="card-${app.id}"><div class="app-card-header"><div><div class="app-id">#${app.id}</div><div class="app-service">${serviceInfo}</div></div><span class="app-status ${statusClass}">${statusNames[app.status] || 'Новая'}</span></div><div class="app-details"><div class="app-detail"><span class="app-detail-label">ФИО</span><span class="app-detail-value">${app.fullName || '—'}</span></div><div class="app-detail"><span class="app-detail-label">Телефон</span><span class="app-detail-value">${app.phone || '—'}</span></div><div class="app-detail"><span class="app-detail-label">Email</span><span class="app-detail-value">${app.email || '—'}</span></div>${app.address ? `<div class="app-detail"><span class="app-detail-label">Адрес доставки</span><span class="app-detail-value">${app.address}</span></div>` : ''}${app.mnpNumber ? `<div class="app-detail"><span class="app-detail-label">Номер для переноса</span><span class="app-detail-value">${app.mnpNumber}</span></div>` : ''}<div class="app-detail"><span class="app-detail-label">Дата создания</span><span class="app-detail-value">${formattedDate}</span></div>${app.comment ? `<div class="app-detail" style="grid-column: 1/-1;"><span class="app-detail-label">Комментарий</span><span class="app-detail-value">${app.comment}</span></div>` : ''}</div><div class="app-actions">${app.status === 'new' ? `<button class="action-btn primary" onclick="handleApplication('${app.id}', 'process')"><i class="fa-solid fa-play"></i> Взять в обработку</button>` : ''}${app.status === 'process' ? `<button class="action-btn success" onclick="handleApplication('${app.id}', 'done')"><i class="fa-solid fa-check"></i> Выполнено</button>` : ''}${app.status === 'done' ? `<button class="action-btn" onclick="handleApplication('${app.id}', 'process')"><i class="fa-solid fa-rotate-left"></i> Вернуть в обработку</button>` : ''}<button class="action-btn" onclick="copyAppData('${app.id}')"><i class="fa-solid fa-copy"></i> Копировать</button><button class="action-btn danger" onclick="handleDelete('${app.id}')"><i class="fa-solid fa-trash"></i> Удалить</button></div></div>`;
+    }
+    
+    function updateStats(applications) {
+        const newCount = applications.filter(a => a.status === 'new').length;
+        const processCount = applications.filter(a => a.status === 'process').length;
+        const doneCount = applications.filter(a => a.status === 'done').length;
+        const totalCount = applications.length;
+        document.getElementById('statNew').textContent = newCount;
+        document.getElementById('statProcess').textContent = processCount;
+        document.getElementById('statDone').textContent = doneCount;
+        document.getElementById('statTotal').textContent = totalCount;
+    }
+    
+    async function handleApplication(appId, newStatus) {
+        try { await updateApplicationStatus(appId, newStatus); showNotification(`Заявка #${appId} переведена в статус "${getStatusName(newStatus)}"`); await loadApplications(); }
+        catch (error) { addDebugLog(`❌ Ошибка обновления: ${error}`, 'error'); showNotification('Ошибка при обновлении заявки', 'error'); }
+    }
+    
+    async function handleDelete(appId) {
+        if (!confirm(`Вы уверены, что хотите удалить заявку #${appId}?`)) return;
+        try { await deleteApplication(appId); showNotification(`Заявка #${appId} удалена`); await loadApplications(); }
+        catch (error) { addDebugLog(`❌ Ошибка удаления: ${error}`, 'error'); showNotification('Ошибка при удалении заявки', 'error'); }
+    }
+    
+    function copyAppData(appId) {
+        const card = document.getElementById(`card-${appId}`);
+        if (!card) return;
+        const details = card.querySelectorAll('.app-detail');
+        let text = '';
+        details.forEach(detail => { const label = detail.querySelector('.app-detail-label')?.textContent || ''; const value = detail.querySelector('.app-detail-value')?.textContent || ''; text += `${label}: ${value}\n`; });
+        navigator.clipboard.writeText(text).then(() => { showNotification('Данные скопированы в буфер обмена'); }).catch(() => { showNotification('Не удалось скопировать данные', 'error'); });
+    }
+    
+    function getStatusName(status) { return { 'new': 'Новая', 'process': 'В обработке', 'done': 'Выполнена' }[status] || status; }
+    function filterApplications() { loadApplications(); }
+    function showNotification(message, type = 'success') {
+        const toast = document.getElementById('notificationToast');
+        toast.textContent = message;
+        toast.style.display = 'block';
+        toast.style.background = type === 'error' ? 'linear-gradient(135deg, #ef4444, #dc2626)' : 'linear-gradient(135deg, #5c6df3, #ff3bff)';
+        setTimeout(() => { toast.style.display = 'none'; }, 3500);
+    }
+    
+    async function loadApplications() {
+        try { addDebugLog('🔄 Загрузка заявок...'); const applications = await getAllApplications(); addDebugLog(`📊 Отрисовка ${applications.length} заявок`); renderApplications(applications); }
+        catch (error) { addDebugLog(`❌ Ошибка загрузки: ${error}`, 'error'); document.getElementById('applicationsList').innerHTML = `<div class="empty-state"><i class="fa-solid fa-triangle-exclamation"></i><h3>Ошибка загрузки</h3><p>Проверьте консоль для деталей</p></div>`; }
+    }
+    
+    document.addEventListener('click', (e) => {
+        if (e.target.classList.contains('filter-btn')) { document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active')); e.target.classList.add('active'); currentFilter = e.target.dataset.filter; filterApplications(); }
+    });
+    
+    function setupRealTimeUpdates() {
+        try { const channel = new BroadcastChannel('serendale_admin'); channel.onmessage = (event) => { if (event.data.type === 'new_application') { addDebugLog(`📡 Новая заявка: ${event.data.application.id}`); showNotification(`Новая заявка от ${event.data.application.fullName}!`); loadApplications(); } }; addDebugLog('✅ BroadcastChannel активен'); } catch (e) { addDebugLog('⚠️ BroadcastChannel не поддерживается'); }
+        window.addEventListener('storage', (e) => { if (e.key === 'serendale_new_app') { addDebugLog('📡 Обнаружена новая заявка через localStorage'); loadApplications(); } });
+        setInterval(() => { loadApplications(); }, 5000);
+    }
+    
+    async function init() { addDebugLog('🚀 Инициализация...'); await openAdminDB(); await loadApplications(); setupRealTimeUpdates(); addDebugLog('👩‍💼 Админ-панель готова'); }
+    init().catch(error => { addDebugLog(`❌ Критическая ошибка: ${error}`, 'error'); });
+</script>
+</body>
+</html>
